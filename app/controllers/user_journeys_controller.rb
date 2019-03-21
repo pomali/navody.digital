@@ -9,7 +9,8 @@ class UserJourneysController < ApplicationController
 
   def start
     journey = Journey.find_by!(slug: params[:id])
-    user_journey = current_user.user_journeys.start!(journey)
+    step = journey.steps.find_by!(slug: params[:step]) if params[:step]
+    user_journey = CreateUserJourney.call(current_user, journey, step).result
 
     redirect_to user_journey
   end
