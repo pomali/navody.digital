@@ -4,10 +4,9 @@ RSpec.describe SubscribeToNewsletterJob, type: :job do
   describe '#perform_now' do
     it 'calls APIs' do
       expect(EmailService).to receive(:find_list).with('list-name').and_return(id: '34')
-      expect(EmailService).to receive(:create_contact).with(
+      expect(EmailService).to receive(:create_doi_contact).with(
         email: 'email',
-        listIds: ['34'],
-        updateEnabled: true
+        include_list_ids: ['34']
       )
       described_class.perform_now('email', 'list-name')
     end

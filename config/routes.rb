@@ -166,6 +166,7 @@ Rails.application.routes.draw do
   end
 
   post 'newsletter/subscribe', to: 'newsletter_subscriptions#subscribe', as: :newsletter_subscribe
+  get 'newsletter/confirmed', to: 'newsletter_subscriptions#confirmed', as: :newsletter_confirmed
 
   resource :session, only: [:new, :create, :destroy]
   get '/auth/magiclink/info', to: 'sessions#magic_link_info'

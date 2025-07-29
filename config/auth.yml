@@ -3,8 +3,9 @@ default: &default
     client_id: <%= ENV.fetch('GOOGLE_CLIENT_ID', nil) %>
     client_secret: <%= ENV.fetch('GOOGLE_CLIENT_SECRET', nil) %>
 
-  sendinblue:
-    api_key: <%= ENV.fetch('SENDINBLUE_API_KEY', nil) %>
+  brevo:
+    api_key: <%= ENV.fetch('BREVO_API_KEY', nil) %>
+    doi_template_id: <%= ENV.fetch('BREVO_DOI_TEMPLATE_ID', nil) %>
 
   eid:
     base_url: <%= ENV.fetch('AUTH_EID_BASE_URL', nil) %>
@@ -16,8 +17,9 @@ development:
 
 test:
   <<: *default
-  sendinblue:
+  brevo:
     api_key: ''
+    doi_template_id: ''
 
 staging:
   <<: *default
