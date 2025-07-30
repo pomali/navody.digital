@@ -17,12 +17,9 @@ class EmailService
       raise ArgumentError, "Email is required" if params[:email].blank?
       raise ArgumentError, "Include list IDs are required" if params[:include_list_ids].blank?
 
-      token_data = { email: params[:email], expires_at: 24.hours.from_now.to_i }
-      confirmation_token = Rails.application.message_verifier(:newsletter_confirmation).generate(token_data)
-
       host = Rails.application.routes.default_url_options[:host] || 'localhost:3000'
       protocol = Rails.application.config.force_ssl ? 'https' : 'http'
-      redirection_url = "#{protocol}://#{host}/newsletter/confirmed?token=#{CGI.escape(confirmation_token)}"
+      redirection_url = "#{protocol}://#{host}/newsletter/confirmed"
 
       doi_contact = Brevo::CreateDoiContact.new
       doi_contact.email = params[:email]
