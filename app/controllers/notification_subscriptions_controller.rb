@@ -6,23 +6,27 @@ class NotificationSubscriptionsController < ApplicationController
   end
 
   def create
+    params[:notification_subscription_group][:selected_subscription_types] ||= []
     @group = NotificationSubscriptionGroup.new(notification_group_params.except(:more))
-    if AltchaSolution.verify_and_save(params.permit(:altcha)[:altcha])
+
+    if AltchaSolution.verify_and_save(params[:altcha])
       @group.user = current_user
       @group.journey = Journey.find(params[:notification_subscription_group][:journey_id]) if params[:notification_subscription_group][:journey_id].present?
       respond_to do |format|
         if @group.save
+          format.html { redirect_to notification_subscription_groups_path, notice: 'Úspešne ste sa prihlásili na notifikácie.' }
           format.js
         else
+          format.html { render :index }
           format.js { render :new }
         end
       end
     else
       respond_to do |format|
+        format.html { redirect_to notification_subscription_groups_path, alert: 'Potvrďte, že nie ste robot.' }
         format.js { render :failure, status: :unprocessable_entity}
       end
     end
-
   end
 
   def confirm
