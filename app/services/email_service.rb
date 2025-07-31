@@ -2,21 +2,50 @@ class EmailService
   class << self
     def subscribe_to_newsletter(email, list_name)
       list = find_list(list_name)
+  
+      raise "Contact list not found: #{list_name}" unless list[:id]
+      
+      create_contact(email: email, listIds: [list[:id]], updateEnabled: true)
+    end
+    
+    def subscribe_to_newsletter_with_doi(email, list_name)
+      list = find_list(list_name)
 
       raise "Contact list not found: #{list_name}" unless list[:id]
 
-      create_contact(email: email, listIds: [list[:id]], updateEnabled: true)
+      create_doi_contact(email: email, include_list_ids: [list[:id]])
     end
 
     def send_email(params)
-      email = SibApiV3Sdk::SendSmtpEmail.new(params)
+      email = Brevo::SendSmtpEmail.new(params)
       transactional_emails_api.send_transac_email(email)
     end
 
     private
 
+    def doi_template_id
+      ENV['BREVO_DOI_TEMPLATE_ID']
+    end
+
     def create_contact(params)
       contacts_api.create_contact(params)
+    end
+    
+    def create_doi_contact(params)
+      raise ArgumentError, "Email is required" if params[:email].blank?
+      raise ArgumentError, "Include list IDs are required" if params[:include_list_ids].blank?
+
+      host = Rails.application.routes.default_url_options[:host] || 'localhost:3000'
+      protocol = Rails.application.config.force_ssl ? 'https' : 'http'
+      redirection_url = "#{protocol}://#{host}/newsletter/confirmed"
+
+      doi_contact = Brevo::CreateDoiContact.new
+      doi_contact.email = params[:email]
+      doi_contact.include_list_ids = params[:include_list_ids]
+      doi_contact.template_id = doi_template_id
+      doi_contact.redirection_url = redirection_url
+
+      contacts_api.create_doi_contact(doi_contact)
     end
 
     def find_list(name)
@@ -38,13 +67,11 @@ class EmailService
     end
 
     def contacts_api
-      SibApiV3Sdk::ContactsApi.new
+      Brevo::ContactsApi.new
     end
 
     def transactional_emails_api
-      SibApiV3Sdk::TransactionalEmailsApi.new
+      Brevo::TransactionalEmailsApi.new
     end
   end
 end
-
-

@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  get '/altcha', to: 'altcha#new'
   get :health, to: 'health#index'
   get 'robots.:format', to: 'robots#index'
 
@@ -162,6 +163,11 @@ Rails.application.routes.draw do
 
   resources :notification_subscription_groups, controller: :notification_subscriptions, path: 'notifikacie' do
     get :confirm, on: :member, path: 'potvrdit'
+  end
+  
+  namespace :newsletter do
+    post :subscribe, to: 'newsletter_subscriptions#subscribe'
+    get :confirmed, to: 'newsletter_subscriptions#confirmed'
   end
 
   resource :session, only: [:new, :create, :destroy]

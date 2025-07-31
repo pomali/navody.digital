@@ -1,4 +1,4 @@
-<%= form_with model: form, id: 'new_subscription_notification_group', html: {novalidate: true} do |f| %>
+<%= form_with model: form, id: 'new_subscription_notification_group', remote: true, local: false do |f| %>
   <div class="govuk-form-group <% if form.errors[:selected_subscription_types].any? %> govuk-form-group--error<% end %>">
     <% form.errors[:selected_subscription_types].each do |error| %>
       <span class="govuk-error-message"><%= error %></span>
@@ -32,9 +32,9 @@
         <span class="govuk-error-message"><%= error %></span>
       <% end %>
       <% if form.errors[:email].any? %>
-        <%= f.email_field :email, class: 'govuk-input govuk-input--width-20 govuk-input--error', autocomplete: :email %>
+        <%= f.email_field :email, class: 'govuk-input govuk-input--width-20 govuk-input--error', autocomplete: :email, required: true %>
       <% else %>
-        <%= f.email_field :email, class: 'govuk-input govuk-input--width-20', autocomplete: :email %>
+        <%= f.email_field :email, class: 'govuk-input govuk-input--width-20', autocomplete: :email, required: true %>
       <% end %>
     </div>
   <% end %>
@@ -43,6 +43,8 @@
     <% if !form.journey.nil? and form.journey.blank? %>
       <%= hidden_field_tag 'notification_subscription_group[journey_id]', form.journey.id %>
     <% end %>
+    <altcha-widget hidelogo hidefooter strings="<%= JSON.dump({ 'label': 'Nie som robot', 'verifying': 'Overujem...', 'verified': 'Overené'}) %>" challengeurl="<%= altcha_url() %>"></altcha-widget>
+    <div class="altcha-error"></div>
     <%= submit_tag 'Chcem dostávať tieto notifikácie', class: 'govuk-button' %>
   </div>
 

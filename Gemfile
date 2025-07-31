@@ -49,6 +49,8 @@ gem 'omniauth'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-rails_csrf_protection'
 
+gem 'altcha-rails'
+
 gem 'pry-rails'
 
 gem 'aws-sdk-rails'
@@ -71,8 +73,7 @@ gem 'validate_url'
 
 gem 'http'
 
-# sendinblue V3
-gem 'sib-api-v3-sdk'
+gem 'brevo'
 gem 'recaptcha'
 gem 'friendly_id'
 
