@@ -2,12 +2,12 @@ class EmailService
   class << self
     def subscribe_to_newsletter(email, list_name)
       list = find_list(list_name)
-  
+
       raise "Contact list not found: #{list_name}" unless list[:id]
-      
+
       create_contact(email: email, listIds: [list[:id]], updateEnabled: true)
     end
-    
+
     def subscribe_to_newsletter_with_doi(email, list_name)
       list = find_list(list_name)
 
@@ -24,13 +24,13 @@ class EmailService
     private
 
     def doi_template_id
-      ENV['BREVO_DOI_TEMPLATE_ID']
+      ENV['BREVO_DOI_TEMPLATE_ID']&.to_i
     end
 
     def create_contact(params)
       contacts_api.create_contact(params)
     end
-    
+
     def create_doi_contact(params)
       raise ArgumentError, "Email is required" if params[:email].blank?
       raise ArgumentError, "Include list IDs are required" if params[:include_list_ids].blank?
@@ -45,7 +45,7 @@ class EmailService
       doi_contact.template_id = doi_template_id
       doi_contact.redirection_url = redirection_url
 
-      contacts_api.create_doi_contact(doi_contact)
+      Brevo::ContactsApi.new.create_doi_contact(doi_contact)
     end
 
     def find_list(name)
