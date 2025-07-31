@@ -1,1 +1,1 @@
-Rails.application.routes.default_url_options[:host] = ENV.fetch("DEFAULT_URL_HOST", 'localhost:3000')
+Rails.application.routes.default_url_options[:host] = Rails.application.config_for(:app).dig(:host) || 'localhost:3000'
