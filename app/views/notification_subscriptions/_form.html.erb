@@ -1,4 +1,4 @@
-<%= form_with model: form, id: 'new_subscription_notification_group' do |f| %>
+<%= form_with model: form, id: 'new_subscription_notification_group', remote: true, local: false do |f| %>
   <div class="govuk-form-group <% if form.errors[:selected_subscription_types].any? %> govuk-form-group--error<% end %>">
     <% form.errors[:selected_subscription_types].each do |error| %>
       <span class="govuk-error-message"><%= error %></span>

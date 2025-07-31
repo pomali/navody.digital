@@ -24,7 +24,7 @@ class EmailService
     private
 
     def doi_template_id
-      Rails.application.config_for(:auth).dig(:brevo, :doi_template_id)
+      ENV['BREVO_DOI_TEMPLATE_ID']
     end
 
     def create_contact(params)

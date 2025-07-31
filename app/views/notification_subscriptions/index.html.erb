@@ -7,21 +7,14 @@
     <p class="govuk-body">Aby vám neunikol dôležitý termín, povinnosť či príležitosť, aktivujte si notifikácie.<br><strong>Jeden email raz za čas, žiadny spam.</strong></p>
 
     <div class="sdn-content">
-      <% if @group %>
-        <%= render partial: 'notification_subscriptions/component', locals: {
-          group: @group,
-          content: nil
-        } %>
-      <% else %>
-        <%= render_notification_subscription_component([
-          'NewsletterSubscription',
-          'VoteSubscription',
-          'CompanyNewsletterSubscription',
-          'NGOSubscription',
-          'SelfEmployedSubscription',
-          'CarOwnerSubscription'
-        ]) %>
-      <% end %>
+      <%= render_notification_subscription_component([
+        'NewsletterSubscription',
+        'VoteSubscription',
+        'CompanyNewsletterSubscription',
+        'NGOSubscription',
+        'SelfEmployedSubscription',
+        'CarOwnerSubscription'
+      ]) %>
     </div>
   </div>
 </div>

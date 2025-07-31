@@ -14,16 +14,13 @@ class NotificationSubscriptionsController < ApplicationController
       @group.journey = Journey.find(params[:notification_subscription_group][:journey_id]) if params[:notification_subscription_group][:journey_id].present?
       respond_to do |format|
         if @group.save
-          format.html { redirect_to notification_subscription_groups_path, notice: 'Úspešne ste sa prihlásili na notifikácie.' }
           format.js
         else
-          format.html { render :index }
           format.js { render :new }
         end
       end
     else
       respond_to do |format|
-        format.html { redirect_to notification_subscription_groups_path, alert: 'Potvrďte, že nie ste robot.' }
         format.js { render :failure, status: :unprocessable_entity}
       end
     end

@@ -15,13 +15,13 @@ class NewsletterSubscriptionsController < ApplicationController
       end
     else
       respond_to do |format|
-        format.js { render :altcha_failure, status: :unprocessable_entity}
+        format.js { render :failure, status: :unprocessable_entity}
       end
     end
   end
 
   def confirmed
-    render :confirmed
+    redirect_to root_path, notice: 'Ďakujeme za potvrdenie! Vaša emailová adresa bola pridaná do nášho zoznamu odberateľov.'
   end
 
   private
