@@ -33,6 +33,8 @@ jobs:
 
       - run: yarn install
       - run: bundle exec rails webpacker:compile
+        env:
+          NODE_OPTIONS: "--openssl-legacy-provider"
       - run: bundle exec rails db:test:prepare --trace
       - run: bundle exec rspec
 
