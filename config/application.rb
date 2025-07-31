@@ -49,6 +49,10 @@ module NavodySlovenskoDigital
     config.action_mailer.default_url_options = options
     config.action_mailer.deliver_later_queue_name = "default"
 
+    config.routes.default_url_options = {
+      host: ENV.fetch("DEFAULT_URL_HOST", app_host),
+    }
+
     config.active_record.schema_format = :sql
 
     config.exception_handler = {
