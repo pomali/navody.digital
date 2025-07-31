@@ -166,8 +166,8 @@ Rails.application.routes.draw do
   end
   
   namespace :newsletter do
-    post :subscribe, to: 'newsletter_subscriptions#subscribe', as: :newsletter_subscribe
-    get :confirmed, to: 'newsletter_subscriptions#confirmed', as: :newsletter_confirmed
+    post :subscribe, to: 'newsletter_subscriptions#subscribe'
+    get :confirmed, to: 'newsletter_subscriptions#confirmed'
   end
 
   resource :session, only: [:new, :create, :destroy]
