@@ -164,9 +164,11 @@ Rails.application.routes.draw do
   resources :notification_subscription_groups, controller: :notification_subscriptions, path: 'notifikacie' do
     get :confirm, on: :member, path: 'potvrdit'
   end
-
-  post 'newsletter/subscribe', to: 'newsletter_subscriptions#subscribe', as: :newsletter_subscribe
-  get 'newsletter/confirmed', to: 'newsletter_subscriptions#confirmed', as: :newsletter_confirmed
+  
+  namespace :newsletter do
+    post :subscribe, to: 'newsletter_subscriptions#subscribe', as: :newsletter_subscribe
+    get :confirmed, to: 'newsletter_subscriptions#confirmed', as: :newsletter_confirmed
+  end
 
   resource :session, only: [:new, :create, :destroy]
   get '/auth/magiclink/info', to: 'sessions#magic_link_info'
