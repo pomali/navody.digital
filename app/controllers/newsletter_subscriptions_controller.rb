@@ -4,7 +4,7 @@ class NewsletterSubscriptionsController < ApplicationController
     email, altcha = subscription_params
     if AltchaSolution.verify_and_save(altcha)
       begin
-        SubscribeToNewsletterWithDoiJob.perform_now(email, 'NewsletterSubscription')
+        EmailService.subscribe_to_newsletter_with_doi(email, 'NewsletterSubscription')
         respond_to do |format|
           format.js { render :success}
         end
