@@ -19,6 +19,7 @@ class Admin::JourneysController < Admin::AdminController
 
   # GET /admin/journeys/1/edit
   def edit
+    @journey.build_categorization unless @journey.categorization
   end
 
   # POST /admin/journeys
