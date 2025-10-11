@@ -9,7 +9,7 @@
           <h2 class="govuk-heading-m govuk-!-margin-bottom-9">Výsledky vyhľadávania pre &bdquo;<%= @q %>&ldquo;</h2>
 
           <% if @searches.empty? %>
-            <p class="govuk-body">
+            <p class="govuk-body" id="search_no_results" data-query="<%= @q %>">
               Pre tento výraz sme nenašli žiadne výsledky.
             </p>
           <% end %>
@@ -41,4 +41,5 @@
       </div>
     </main>
   </div>
+  <%= javascript_include_tag 'no_results_analytics.js', 'data-turbolinks-track': 'reload' %>
 <% end %>
