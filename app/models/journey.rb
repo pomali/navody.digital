@@ -23,6 +23,7 @@ class Journey < ApplicationRecord
 
   has_many :search_documents, :class_name => 'Document', as: :searchable
   has_one :categorization, :as => :categorizable, dependent: :destroy
+  has_many :categories, through: :categorization
   accepts_nested_attributes_for :categorization
 
   validates :title, presence: true
@@ -56,7 +57,7 @@ class Journey < ApplicationRecord
   end
 
   def description_search
-    join_search([html_to_search_str(description), steps_search(:content)])
+    join_search([html_to_search_str(description), steps_search(:content), categorization_search(:name, :description)])
   end
 
   def title_search
@@ -110,5 +111,9 @@ class Journey < ApplicationRecord
 
   def steps_search(column)
     Document.where(searchable: steps).pluck(column).join(' ')
+  end
+
+  def categorization_search(*columns)
+    html_to_search_str(categories.pluck(*columns).flatten.join(' '))
   end
 end

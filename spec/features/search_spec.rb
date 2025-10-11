@@ -29,6 +29,32 @@ RSpec.feature 'Search', type: :feature do
     expect(page).not_to have_text(unmatching_faq.title)
   end
 
+  scenario 'Visitor searches for category of interest' do
+    title_matching = 'Batman'
+    description_matching = 'Superman'
+
+    category = create(:category, name: "#{title_matching} category", description: "#{description_matching} description")
+    matching_journey = create(:journey, title: "matching journey", published_status: 'PUBLISHED')
+    create(:categorization, categorizable: matching_journey, categories: [category])
+
+    matching_journey.title = 'journey with category'
+    matching_journey.save!
+
+    visit root_path
+    fill_in 'q', with: title_matching
+    click_button 'Hľadať'
+
+    expect(page).to have_text('Výsledky vyhľadávania')
+    expect(page).to have_text(matching_journey.title)
+
+    visit root_path
+    fill_in 'q', with: description_matching
+    click_button 'Hľadať'
+
+    expect(page).to have_text('Výsledky vyhľadávania')
+    expect(page).to have_text(matching_journey.title)
+  end
+
   scenario 'Not found results' do
     visit root_path
     fill_in 'q', with: 'Neexistujuci vyraz'
