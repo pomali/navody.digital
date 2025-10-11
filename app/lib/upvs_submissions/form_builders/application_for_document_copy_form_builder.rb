@@ -2,9 +2,9 @@ class UpvsSubmissions::FormBuilders::ApplicationForDocumentCopyFormBuilder
   def self.build_form(form)
     xml_form = Nokogiri::XML::Builder.new do |m|
       m.ApplicationForDocumentCopy do
-        m.parent['xmlns:e'] = 'http://schemas.gov.sk/form/00166073.MSSR_ORSR_Poziadanie_o_vyhotovenie_kopie_listiny_ulozenej_v_zbierke_listin.sk/1.53'
+        m.parent['xmlns:e'] = 'http://schemas.gov.sk/form/00166073.MSSR_ORSR_Poziadanie_o_vyhotovenie_kopie_listiny_ulozenej_v_zbierke_listin.sk/1.90'
         m.parent['xmlns:xsi'] = 'http://www.w3.org/2001/XMLSchema-instance'
-        m.parent['xmlns'] = 'http://schemas.gov.sk/form/00166073.MSSR_ORSR_Poziadanie_o_vyhotovenie_kopie_listiny_ulozenej_v_zbierke_listin.sk/1.53'
+        m.parent['xmlns'] = 'http://schemas.gov.sk/form/00166073.MSSR_ORSR_Poziadanie_o_vyhotovenie_kopie_listiny_ulozenej_v_zbierke_listin.sk/1.90'
         m.MethodOfService do
           m.Codelist do
             m.CodelistCode '1000401'
