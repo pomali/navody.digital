@@ -11,7 +11,7 @@ module Apps
       class BusinessActs
       def search_business(query)
         return [] unless query.present?
-        res = client.get('/orsr.webapiforms/search', s: query)
+        res = client.get('https://orsr.sk/orsr.webapiforms/search', s: query)
 
         if res.success?
           json = aspx_to_json(res.body)
@@ -23,15 +23,15 @@ module Apps
       end
 
       def search_acts(business)
-        if !business || business.oddiel.blank? || business.sud.blank? || business.vlozka.blank?
+        if !business || business.oddiel.blank? || business.vlozka.blank? || business.name.blank?
           return []
         end
 
         res = client.get(
-          '/orsr.webapiforms/search/listina',
-          oddiel: business.oddiel,
-          vlozka: business.vlozka,
-          sud: business.sud,
+          'https://sluzby.orsr.sk/lookup/documents',
+          section: business.oddiel,
+          insertNumber: business.vlozka,
+          courtCode: business.name.last(2).first,
         )
         if res.success?
           Act.array_from_json(res.body)
@@ -45,7 +45,7 @@ module Apps
       end
 
       def client
-        Faraday.new('https://orsr.sk') do |faraday|
+        Faraday.new do |faraday|
           faraday.request :json
           faraday.response :json
           faraday.response(:logger, Rails.logger, headers: false, bodies: false)
@@ -82,19 +82,19 @@ module Apps
         attr_accessor(:raw, :name, :formatted_name, :type, :delivery_date, :serial_number, :page_count, :make_copy, :json_value)
 
         def self.array_from_json(json)
-          json['data'].map do |act|
+          json.map do |act|
             new(
-              name: act['name'],
+              name: act['nazovListiny'],
               formatted_name: act['formattedName'],
               type: act['type'],
-              delivery_date: act['deliveryDate'],
+              delivery_date: act['datumDorucenia'],
               serial_number: act['serialNumber'],
-              page_count: act['page_count'],
+              page_count: act['pageCount'],
               raw: act,
               make_copy: false,
               json_value: {
                 "id" => act['serialNumber'],
-                "name" => act['name'],
+                "name" => act['nazovListiny'],
                 "code" => act['serialNumber'],
                 "make_copy" => true
               }.to_json
