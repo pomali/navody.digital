@@ -2,7 +2,9 @@ FROM ruby:3.2.9
 
 # Install packages
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN curl -fsSL https://dl.yarnpkg.com/debian/pubkey.gpg | \
+    gpg --dearmor | \
+    tee /etc/apt/trusted.gpg.d/yarn.gpg > /dev/null
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 RUN apt-get update -qq && apt-get install -qq --no-install-recommends \
     build-essential \
